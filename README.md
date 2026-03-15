@@ -1,2 +1,7 @@
 # PROJECT
-This Repo will be for IMPORTANT Tasks
+
+![Flowchart](record-flowchart.png)
+
+SUBJECTED TO CHANGE, NOT FINAL
+
+##
