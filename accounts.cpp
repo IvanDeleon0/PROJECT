@@ -23,3 +23,8 @@ bool haveAcc(string username, string pass){
 
     return false;
 }
+
+bool isPrivate(int choice){
+
+
+}
