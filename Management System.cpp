@@ -1,10 +1,14 @@
 
 #include <iostream>
-#include <fstream>
-#include <string>
+#include <fstream> // file management
+#include <string> // 
+#include <vector> // storage
+#include <thread> // animations
+#include <chrono>
 using namespace std;
 
 // global colored texts
+const  string yellow = "\033[33m";// yellow
   const  string blue = "\033[34m"; // for the borders
   const  string green = "\033[32m"; // green for success messages
   const string reset = "\033[0m"; // back to white colored texts
@@ -18,9 +22,25 @@ void showColorfulWelcome() {
     cout << blue << "* *" << reset << endl;
     cout << blue << "*******************************************" << reset << endl;
 }
+void newUser(){
+  cout << string(20,'=');
+  cout << "\nWelcome, new user \n";
+  cout << string(20,'=');
+}
 
+void loading(){
+    for (int i=1; i <100;i++ ){
+        cout <<"\rLoading" << i << flush  ;
+        this_thread::sleep_for(chrono::milliseconds(30));
+    }
+}
 int main()
 {
+    // Vectors [Storage]
+    vector<string> password;
+    vector<string> usernames;
+    
+    // Utilities
     string username;
     string pass;
     int initchoice = 0;
@@ -28,7 +48,7 @@ int main()
     showColorfulWelcome();
     while(true){
     
-    cout << "1. LOGIN\n";
+    cout << reset<< "\n1. LOGIN\n";
     cout << "2. Create Account"<<endl;
     cout << "3. Exit"<<endl;
     
@@ -59,6 +79,7 @@ int main()
             cin.ignore(1000, '\n');
             continue;
         }
+       
         
           //Account Checking / Verification Thru LOGIN option
            /* if(haveAcc(username, pass)){
@@ -72,7 +93,21 @@ int main()
         
     }
     else if (initchoice == 2){
-    // account registration logic
+        //Welcome message
+        newUser();
+        
+        // ACCOUNT CREDENTIALS 
+       
+        cout << "\nAccount Username: "<< yellow;
+        cin >> username;
+        usernames.push_back(username);//Store the username in the [USERNAMES] vector
+        cout  << reset<<"Account  Password: "<< yellow;
+        cin >>  pass;
+        password.push_back(pass); //Store the pass in the [PASSWORD] vector
+        
+        loading();
+        
+        
     }
     else if (initchoice == 3){
         return 0;//exit program
