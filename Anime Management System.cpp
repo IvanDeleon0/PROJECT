@@ -14,6 +14,23 @@ const  string yellow = "\033[33m";// yellow
   const string reset = "\033[0m"; // back to white colored texts
   const string red = "\033[1;31m"; // for error messages
 
+//FOR Distinguishing ACCOUNTs 
+struct Account{
+  string user;
+  int pass;
+}
+
+//Contents of the User's Account
+struct Expense {
+  string category;
+  string category_ID;
+  double amount;
+
+  
+//global
+ // Vectors [Storage]
+vector<Account> users;
+
 void showColorfulWelcome() {
     
     cout << blue << "*******************************************" << reset << endl;
@@ -36,9 +53,6 @@ void loading(){
 }
 int main()
 {
-    // Vectors [Storage]
-    vector<string> password;
-    vector<string> usernames;
     
     // Utilities
     string username;
