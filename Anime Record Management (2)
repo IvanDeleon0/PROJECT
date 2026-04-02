@@ -1,0 +1,187 @@
+
+#include <iostream> 
+#include <fstream> // file management
+#include <string> // append .... so on
+#include <vector> // storage
+#include <thread> // animations
+#include <chrono> // animation (2) / for delay
+using namespace std;
+
+// global colored texts
+const  string yellow = "\033[33m";// yellow
+  const  string blue = "\033[34m"; // for the borders
+  const  string green = "\033[32m"; // green for success messages
+  const string reset = "\033[0m"; // back to white colored texts
+  const string red = "\033[1;31m"; // for error messages
+
+//dashboard contents
+struct accContents{
+  // Total Manga and Anime
+  string anime_name;
+  int anime_ep;
+  int totalSeeAnime;
+  
+  string manga_name;
+  double manga_chpt; // double because theres chapter with '10.5'
+  int totalReadManga;
+  
+    
+    /*not enough data to continue
+    needed:
+    -total minutes
+    -total episodes / chapters
+    */
+    
+    //proposed variables for the dashboard
+   // double avgSeeAnime; formula : total minutes / total episodes
+    //double avgReadManga; formula: totalReadManga / chapters
+};
+    
+//Account verification
+struct Account{
+  string username;
+  int pin;
+  accContents content;
+ //accContents content; // can access this when 'Account Match'
+};
+
+
+void showColorfulWelcome();
+void newUser();
+void loading();
+
+
+int main()
+{
+   //Storage / Database 
+    vector<Account> userAccount;
+    int initchoice = 0;
+    string username;//input
+    int pin;//input
+    
+    do{
+    showColorfulWelcome();
+    cout << reset<< "\n1. LOGIN\n";
+    cout << "2. Create Account"<<endl;
+    cout << "3. Exit"<<endl;
+    
+   // Menu Choice Logic
+    cout << green << "Choice: " << reset;
+    
+    if (!(cin >> initchoice)) {
+        cout << red << "\nError.... Please enter a number" << reset << endl;
+        cin.clear();
+        cin.ignore(1000, '\n');
+        continue;
+    }
+
+    if (initchoice == 1) {
+        cin.ignore(1000, '\n'); // Clear the buffer once
+        
+        cout << "Username: ";
+        // Combine the input and the error check into one line
+        if (!(getline(cin, username))) {
+            cout << red << "Error identifying the input. Please try again" << reset << endl;
+            continue;
+        }
+
+        cout << "Password: ";
+        if (!(cin >> pin)) {
+            cout << red << "Error identifying the input. Please try again" << reset << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
+            continue;
+        }
+       
+        //Pseudocode
+          //Account Checking / Verification Thru LOGIN option
+           /* if(haveAcc(username, pass)){
+                cout << "Login Successful\n";
+                break;
+            }
+            else{
+                cout << "Account Not Found\n";
+                continue;
+            }*/
+            
+            //creates a temporary container because we can't access the vector directly using 'acc' 
+          bool found =false;
+          for( auto& acc: userAccount) {
+              if (acc.username == username && acc.pin == pin){
+                  found = true;
+                  break;
+              }
+          }
+          
+          if(found){
+              int i = 0;
+              Account &temp = userAccount[i];
+              int choice1 =0;
+              cout << "Anime [1] \n"<< "Manga[2]\n";
+              cin >> choice1;
+              switch(choice1){
+                  case 1: {
+                        cout << "Anime name: ";
+                        cin >> temp.content.anime_name; 
+                        cout << "Episodes Watched: ";
+                        cin >> temp.content.anime_ep;
+                        
+                        userAccount.push_back(temp); // will go to accContent because of content tag for struct accContent
+                  }
+              }
+              
+          }
+        cin.ignore(1000,'\n');
+        
+    }
+    else if (initchoice == 2){
+        //Welcome message
+        newUser();
+        
+        // ACCOUNT CREDENTIALS 
+       Account temp;
+        cout << "\nAccount Username: "<< yellow;
+        cin >> temp.username;
+        cout  << reset<<"Account  Password: "<< yellow;
+    
+        
+        if (!(cin >> temp.pin)) {
+            cout << red << "Error identifying the input. Please try again" << reset << endl;
+            this_thread::sleep_for(chrono::seconds(2));
+            cin.clear();
+            cin.ignore(1000, '\n');
+            continue;
+        }
+        userAccount.push_back(temp);
+        loading();
+        cout <<green << "\nAccount Created Successfully." 
+             << "\nYou can now switch to Login section to Start\n\n" << reset;
+         this_thread::sleep_for(chrono::seconds(2));
+        continue;
+    }
+    else if (initchoice == 3){
+        return 0;//exit program
+
+      }
+    }while(initchoice !=3);
+}
+void showColorfulWelcome() {
+    
+    cout << blue << "*******************************************" << reset << endl;
+    cout << blue << "*                                         *" << reset << endl;
+    cout << "  " << green << "      SYSTEM ACCESS AUTHORIZED       " << reset << endl;
+    cout << blue << "*                                         *" << reset << endl;
+    cout << blue << "*******************************************" << reset << endl;
+}
+void newUser(){
+  cout << string(20,'=');
+  cout << "\nWelcome, new user \n";
+  cout << string(20,'=');
+}
+
+void loading(){
+    for (int i=1; i <100;i++ ){
+        cout <<"\rLoading " << i << flush  ;
+        this_thread::sleep_for(chrono::milliseconds(30));
+    }
+}
