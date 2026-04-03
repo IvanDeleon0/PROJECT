@@ -1,0 +1,316 @@
+
+/* Notes
+Features ng [ARM] Anime Record Management
+
+Account Creation /
+Account validation /
+
+Dashboard
+-Anime-
+Anime name
+'' Episode watched
+
+-Manga-
+Manga Name
+'' Chapters Read
+
+  [UNAVAILABLE FEATURES]
+    [DASHBAORD]
+    Calculation based features 
+      - Total AVG of anime / manga
+       [refer to 'struct accContents' sa global, nandon yung mga dashboard variables]
+    [ACCOUNT]
+      *search account feature 
+      *privacy feature
+  [NEED NG REFINEMENT]
+  *  input validation (! accepts a blank input)
+  * output sa terminal (! di ko forte output design ) 
+     - you can use the 'global colored texts' may labels na din yan
+
+
+1.3 UPDATE
+-ADDED COUT FEATURE FOR DASHBOARD
+=================================================================================================
+MAY DOCUMENTATION NAMAN AKO AND KUNG MAY NAKALIMUTAN AKONG ILAGAY OR NEED NG ADDITIONAL FEATURE [Hope not complicated feature], 
+JUST FORK THIS AND EDIT NIYO based dun sa naiisip niyo, THEN DO A PULL REQUEST SA AKIN.
+PARA BAWAT UPDATE HINDI YUNG ORIG FILE YUNG NABABAGO 
+MORE ON SAFETY LANG NG MAIN FILE NATIN, BACKUP BA GANUN.
+
+=================================================================================================
+*/
+
+
+
+#include <iostream> 
+#include <iomanip> //setw and setprecision
+#include <fstream> // file management
+#include <string> // string
+#include <vector> // storage
+#include <thread> // animations
+#include <chrono> // animation (2) / for delay
+using namespace std;
+
+// global colored texts
+const  string yellow = "\033[33m";// yellow
+  const  string blue = "\033[34m"; // for the borders
+  const  string green = "\033[32m"; // green for success messages
+  const string reset = "\033[0m"; // back to white colored texts
+  const string red = "\033[1;31m"; // for error messages
+
+//dashboard contents
+struct accContents{
+  // Total Manga and Anime
+  string anime_name;
+  int anime_ep;
+  int totalSeeAnime;
+  string manga_name;
+  double manga_chpt; // double because theres chapter with '10.5'
+  int totalReadManga;
+  
+    
+    /*not enough data to continue
+    needed:
+    -total minutes
+    -total episodes / chapters
+    */
+    
+    //proposed variables for the dashboard
+   // double avgSeeAnime; formula : total minutes / total episodes
+    //double avgReadManga; formula: totalReadManga / chapters
+};
+    
+//Account verification
+struct Account{
+  string username;
+  int pin;
+  accContents content;
+ //accContents content; // can access this when 'Account Match'
+};
+
+void loadToFile(vector<Account>&userAccount);
+void saveToFile(const vector<Account> &userAccount); // runs when every changes happens like account creation, input changes or addition. 
+void showColorfulWelcome();
+void newUser();
+void loading();
+void delay(int x);
+
+int main()
+{
+   //Storage / Database 
+    vector<Account> userAccount;
+    int initchoice = 0;
+    string username;//input
+    int pin;//input
+    
+    do{
+    loadToFile(userAccount);
+    showColorfulWelcome();
+    cout << reset<< "\n1. LOGIN\n";
+    cout << "2. Create Account"<<endl;
+    cout << "3. Exit"<<endl;
+    
+   // Menu Choice Logic
+    cout << green << "Choice: " << reset;
+    
+    if (!(cin >> initchoice)) {
+        cout << red << "\nError.... Please enter a number" << reset << endl;
+        cin.clear();
+        cin.ignore(1000, '\n');
+        continue;
+    }
+
+    if (initchoice == 1) {
+        cin.ignore(1000, '\n'); // Clear the buffer once
+        
+        cout << "Username: ";
+        // Combine the input and the error check into one line
+        if (!(getline(cin, username))) {
+            cout << red << "Error identifying the input. Please try again" << reset << endl;
+            continue;
+        }
+
+        cout << "Password: ";
+        if (!(cin >> pin)) {
+            cout << red << "Error identifying the input. Please try again" << reset << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
+            continue;
+        }
+       
+        //Pseudocode
+          //Account Checking / Verification Thru LOGIN option
+           /* if(haveAcc(username, pass)){
+                cout << "Login Successful\n";
+                break;
+            }
+            else{
+                cout << "Account Not Found\n";
+                continue;
+            }*/
+            
+            //creates a temporary container because we can't access the vector directly using 'acc' 
+            
+            
+          /*bool found =false;
+          for( auto& acc: userAccount) {
+              if (acc.username == username && acc.pin == pin){
+                  found = true;
+                  break;
+              }
+          }*/
+          // for loop for finding the Account
+          bool found = false; 
+          int foundIndex = -1 ; 
+          for (int i =0; i < userAccount.size(); i++){
+              if(userAccount[i].username == username && userAccount[i].pin == pin){
+                  found = true;
+                  foundIndex = i;
+              }
+          }
+          
+          if(found){
+              Account &temp = userAccount[foundIndex];
+              int choice1 =0;
+              int new_ep = 0;
+              double new_chpt= 0.0;
+              cout << "Anime [1] \n"<< "Manga[2] \nDashboard[3] \n";
+              cin >> choice1;
+              switch(choice1){
+                  case 1: {
+                        cout << "Anime name: ";
+                        cin >> temp.content.anime_name; 
+                        cout << "Episodes Watched: ";
+                        cin >> new_ep;
+                        
+                        temp.content.anime_ep += new_ep;
+                        saveToFile(userAccount); 
+                        
+                        // will go to accContent because of content tag for struct accContent
+                  }break;
+                  case 2: {
+                       cout << "Manga name: ";
+                        cin >> temp.content.manga_name; 
+                        cout << "Chapters read: ";
+                        cin >> new_chpt;
+                        
+                        temp.content.manga_chpt += new_chpt;
+                        saveToFile(userAccount); 
+                        
+                  }break;
+                  case 3: {
+                     
+                        cout <<yellow << "\n[ANIME]\n";
+                        cout << "Anime Name                Total Episodes Watched"<<endl;
+                        cout << left << setw(25)<<temp.content.anime_name << setw(15) << temp.content.anime_ep;
+                        cout << "\n===============================================================";
+                        
+                        cout << "Press "<< yellow<<"Enter "<< reset<< "to go back to Menu";
+                         cin.ignore(1000,'\n');
+                         cin.get();//Pressing any key 
+                          
+                  }break;
+                  case 4:{
+                      cout << "Press "<< yellow<<"Enter "<< reset<< "to go back to Menu";
+                      cin.ignore(1000,'\n');
+                      cin.get();//Pressing any key 
+                      break;
+                  }
+              }
+              
+          }
+        cin.ignore(1000,'\n');
+        
+    }
+    else if (initchoice == 2){
+        //Welcome message
+        cin.ignore(1000,'\n');
+        newUser();
+        
+        // ACCOUNT CREDENTIALS 
+       Account temp;
+        cout << "\nAccount Username: "<< yellow;
+        getline(cin,temp.username);
+        cout  << reset<<"Account  Password: "<< yellow;
+    
+        
+        if (!(cin >> temp.pin)) {
+            cout << red << "Error identifying the input. Please try again" << reset << endl;
+            this_thread::sleep_for(chrono::seconds(2));
+            cin.clear();
+            cin.ignore(1000, '\n');
+            continue;
+        }
+        userAccount.push_back(temp);
+        saveToFile(userAccount);
+        loading();
+        cout <<green << "\nAccount Saved"
+                     << "\nAccount Created Successfully." 
+                     << "\nYou can now switch to "
+                     << yellow << "Login section "
+                     << reset<<"to Start\n\n" << reset;
+         this_thread::sleep_for(chrono::seconds(2));
+        continue;
+    }
+    else if (initchoice == 3){
+        return 0;//exit program
+
+      }
+    }while(initchoice !=3);
+}
+void showColorfulWelcome() {
+    
+    cout << blue << "*******************************************" << reset << endl;
+    cout << blue << "*                                         *" << reset << endl;
+    cout << "  " << green << "      SYSTEM ACCESS AUTHORIZED       " << reset << endl;
+    cout << blue << "*                                         *" << reset << endl;
+    cout << blue << "*******************************************" << reset << endl;
+}
+void newUser(){
+  cout << string(20,'=');
+  cout << "\nWelcome, new user \n";
+  cout << string(20,'=');
+}
+
+void loading(){
+    for (int i=1; i <100;i++ ){
+        cout <<"\rLoading " << i << flush  ;
+        this_thread::sleep_for(chrono::milliseconds(30));
+    }
+}
+
+void delay(int x){
+    this_thread::sleep_for(chrono::seconds(x));
+}
+void saveToFile(const vector<Account> &userAccount){
+    ofstream outfile("Accounts Database.txt");
+    
+    if(!outfile){
+        cout << red <<"Error: Could not create the saved file" << reset <<endl;
+    }
+    
+    for(const auto& acc: userAccount){
+        outfile << acc.username << " " 
+                << acc.pin << " " 
+                << acc.content.totalSeeAnime << " "
+                << acc.content.manga_name << " "
+                << acc.content.manga_chpt << " "
+                << acc.content.totalReadManga << endl;
+    }
+    outfile.close();
+}
+void loadToFile(vector<Account>&userAccount){
+    ifstream infile("Accounts Database.txt");
+    
+    if(!infile) return; //meaning no file with such name is created or found
+    
+    Account temp; /*this time instead of merging all content to save the accounts, now its to load the accounts, CONTAINER OF DATA*/
+    
+    while(infile >> temp.username 
+                 >> temp.pin 
+                 >> temp.content.totalSeeAnime 
+                 >> temp.content.manga_name 
+                 >> temp.content.manga_chpt 
+                 >> temp.content.totalReadManga)
+                 { userAccount.push_back(temp);
+    }
+}
