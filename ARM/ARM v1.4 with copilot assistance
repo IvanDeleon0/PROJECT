@@ -28,8 +28,17 @@ Manga Name
      - you can use the 'global colored texts' may labels na din yan
 
 
-1.3 UPDATE
--ADDED COUT FEATURE FOR DASHBOARD
+1.4 UPDATE
+
+-accContents moved from single-values to vector<> for multi-entry anime/manga.
+-saveToFile format rewired to: username pin anime_count [name ep]* manga_count [name chapter]*.
+-loadToFile rewired from old bad field mapping to same count+entries flow.
+-Added safety guards (max counts, file_size, cin.fail) to avoid bad_alloc loops.
+
+Main auth flows:
+Login with username/pin checks,
+account creation with newUser display,
+persistent save after each data entry.
 =================================================================================================
 MAY DOCUMENTATION NAMAN AKO AND KUNG MAY NAKALIMUTAN AKONG ILAGAY OR NEED NG ADDITIONAL FEATURE [Hope not complicated feature], 
 JUST FORK THIS AND EDIT NIYO based dun sa naiisip niyo, THEN DO A PULL REQUEST SA AKIN.
