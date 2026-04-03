@@ -1,6 +1,6 @@
 # PROJECT
 
-##ARM v1.3 Curent Features
+## ARM v1.3 Curent Features
 
 ## 📋 Core Features##
 
