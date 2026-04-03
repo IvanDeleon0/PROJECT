@@ -1,0 +1,405 @@
+
+/* Notes
+Features ng [ARM] Anime Record Management
+
+Account Creation /
+Account validation /
+
+Dashboard
+-Anime-
+Anime name
+'' Episode watched
+
+-Manga-
+Manga Name
+'' Chapters Read
+
+  [UNAVAILABLE FEATURES]
+    [DASHBAORD]
+    Calculation based features 
+      - Total AVG of anime / manga
+       [refer to 'struct accContents' sa global, nandon yung mga dashboard variables]
+    [ACCOUNT]
+      *search account feature 
+      *privacy feature
+  [NEED NG REFINEMENT]
+  *  input validation (! accepts a blank input)
+  * output sa terminal (! di ko forte output design ) 
+     - you can use the 'global colored texts' may labels na din yan
+
+
+1.3 UPDATE
+-ADDED COUT FEATURE FOR DASHBOARD
+=================================================================================================
+MAY DOCUMENTATION NAMAN AKO AND KUNG MAY NAKALIMUTAN AKONG ILAGAY OR NEED NG ADDITIONAL FEATURE [Hope not complicated feature], 
+JUST FORK THIS AND EDIT NIYO based dun sa naiisip niyo, THEN DO A PULL REQUEST SA AKIN.
+PARA BAWAT UPDATE HINDI YUNG ORIG FILE YUNG NABABAGO 
+MORE ON SAFETY LANG NG MAIN FILE NATIN, BACKUP BA GANUN.
+
+=================================================================================================
+*/
+
+
+
+#include <iostream> 
+#include <iomanip> //setw and setprecision
+#include <fstream> // file management
+#include <string> // string
+#include <vector> // storage
+#include <thread> // animations
+#include <chrono> // animation (2) / for delay
+using namespace std;
+
+// global colored texts
+const  string yellow = "\033[33m";// yellow
+  const  string blue = "\033[34m"; // for the borders
+  const  string green = "\033[32m"; // green for success messages
+  const string reset = "\033[0m"; // back to white colored texts
+  const string red = "\033[1;31m"; // for error messages
+
+// Struct to hold user's anime and manga data
+struct accContents{
+    vector<string> anime_names;  // List of anime names watched
+    vector<int> anime_eps;       // Corresponding episodes watched
+    vector<string> manga_names;  // List of manga names read
+    vector<double> manga_chpts;  // Corresponding chapters read
+};
+  
+    /*not enough data to continue
+    needed:
+    -total minutes
+    -total episodes / chapters
+    */
+    
+    //proposed variables for the dashboard
+   // double avgSeeAnime; formula : total minutes / total episodes
+    //double avgReadManga; formula: totalReadManga / chapters
+    
+//Account verification
+struct Account{
+  string username;
+  int pin;
+  accContents content;
+ //accContents content; // can access this when 'Account Match'
+};
+
+void loadToFile(vector<Account>&userAccount);
+void saveToFile(const vector<Account> &userAccount); // runs when every changes happens like account creation, input changes or addition. 
+void showColorfulWelcome();
+void newUser();
+void loading();
+void delay(int x);
+
+// Main function: handles the program flow, user login, account creation, and menu navigation
+int main()
+{
+   //Storage / Database 
+    vector<Account> userAccount;
+    int initchoice = 0;
+    string username;//input
+    int pin;//input
+    
+    do{
+    loadToFile(userAccount);
+    showColorfulWelcome();
+    cout << blue << "-----------------------------" << reset << endl;
+    cout << reset<< "\n1. Login" << endl;
+    cout << "2. Create Account" << endl;
+    cout << "3. Exit" << endl;
+    cout << blue << "-----------------------------" << reset << endl;
+    
+   // Menu Choice Logic
+    cout << green << "Choice: " << reset;
+    
+    if (!(cin >> initchoice)) {
+        cout << red << "\nError.... Please enter a number" << reset << endl;
+        cin.clear();
+        cin.ignore(1000, '\n');
+        continue;
+    }
+
+    if (initchoice == 1) {
+        cin.ignore(1000, '\n'); // Clear the buffer once
+        
+        cout << "Username (use _ for spaces): ";
+        // Combine the input and the error check into one line
+        if (!(cin >> username)) {
+            cout << red << "Error identifying the input. Please try again" << reset << endl;
+            continue;
+        }
+
+        cout << "Password: ";
+        if (!(cin >> pin)) {
+            cout << red << "Error identifying the input. Please try again" << reset << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
+            continue;
+        }
+       
+        //Pseudocode
+          //Account Checking / Verification Thru LOGIN option
+           /* if(haveAcc(username, pass)){
+                cout << "Login Successful\n";
+                break;
+            }
+            else{
+                cout << "Account Not Found\n";
+                continue;
+            }*/
+            
+            //creates a temporary container because we can't access the vector directly using 'acc' 
+            
+            
+          /*bool found =false;
+          for( auto& acc: userAccount) {
+              if (acc.username == username && acc.pin == pin){
+                  found = true;
+                  break;
+              }
+          }*/
+          // for loop for finding the Account
+          bool found = false; 
+          int foundIndex = -1 ; //stores the index of the account from the vector
+          for (int i =0; i < userAccount.size(); i++){
+              if(userAccount[i].username == username && userAccount[i].pin == pin){
+                  found = true;
+                  foundIndex = i;
+              }
+          }
+          
+          if(found){
+              cout << green << "Login successful!" << reset << endl;
+              Account &temp = userAccount[foundIndex];
+              int choice1 =0;
+              int new_ep = 0;
+              double new_chpt= 0.0;
+
+
+              //user will stay here until they choose to exit, so that they can add as many anime and manga as they want
+              do{
+              cout << blue << "-----------------------------" << reset << endl;
+              cout << "1. Anime" << endl;
+              cout << "2. Manga" << endl;
+              cout << "3. Dashboard" << endl;
+              cout << "4. Search Account (Unavailable)" << endl;
+              cout << "5. Exit" << endl;
+              cout << blue << "-----------------------------" << reset << endl;
+              cout << "Select Category: " << yellow;
+              cin >> choice1;
+              cout << reset;
+              
+              // Validate choice input
+              if(cin.fail()){
+                  cin.clear();
+                  cin.ignore(1000, '\n');
+                  cout << red << "Invalid input. Please enter 1-4." << reset << endl;
+                  this_thread::sleep_for(chrono::seconds(1));
+                  continue;
+              }
+              cin.ignore(1000, '\n');  // Clear any leftover input
+              
+              switch(choice1){
+                  case 1: {
+                        cout << "Anime name (use _ for spaces): ";
+                        string anime_name;
+                        cin >> anime_name;
+                        cout << "Episodes Watched: ";
+                        cin >> new_ep;
+                        cin.clear();  // Clear error flags
+                        cin.ignore(1000, '\n');  // Clear buffer
+                        
+                        temp.content.anime_names.push_back(anime_name);
+                        temp.content.anime_eps.push_back(new_ep);
+                        saveToFile(userAccount); 
+                        
+                        cout << green << "Anime added!" << reset << endl;
+                        this_thread::sleep_for(chrono::seconds(1));
+                  }break;
+                  case 2: {
+                        cout << "Manga name (use _ for spaces): ";
+                        string manga_name;
+                        cin >> manga_name;
+                        cout << "Chapters read: ";
+                        cin >> new_chpt;
+                        cin.clear();  // Clear error flags
+                        cin.ignore(1000, '\n');  // Clear buffer
+                        
+                        temp.content.manga_names.push_back(manga_name);// store into the vector manga_names
+                        temp.content.manga_chpts.push_back(new_chpt);// store into the vector manga_chpts
+                        saveToFile(userAccount); 
+                        
+                        cout << green << "Manga added!" << reset << endl;
+                        this_thread::sleep_for(chrono::seconds(1));
+                  }break;
+                  case 3: {
+                        cout << yellow << "\n[ANIME]\n" << reset;
+                        cout << "Anime Name                Episodes Watched" << endl;
+                        cout << "------------------------------------------" << endl;
+                        for(size_t i = 0; i < temp.content.anime_names.size(); ++i){
+                            cout << left << setw(25) << temp.content.anime_names[i] << setw(15) << temp.content.anime_eps[i] << endl;
+                        }
+                        cout << "\n[Manga]\n";
+                        cout << "Manga Name                Chapters Read" << endl;
+                        cout << "------------------------------------------" << endl;
+                        for(size_t i = 0; i < temp.content.manga_names.size(); ++i){
+                            cout << left << setw(25) << temp.content.manga_names[i] << setw(15) << temp.content.manga_chpts[i] << endl;
+                        }
+                        cout << "\nPress " << yellow << "Enter " << reset << "to go back to Menu";
+                        cin.ignore(1000,'\n');
+                        cin.get();
+                  }break;
+                  case 4:{
+                    cout << red <<"Search Service is Currently Unavailable"<< reset << endl;
+                    cout << "\nPress "<< yellow<<"Enter "<< reset<< "to go back to Menu";
+                      cin.ignore(1000,'\n');
+                      cin.get();//Pressing any key 
+                      
+                  }break;
+                  case 5:{
+                      cout << "\nPress "<< yellow<<"Enter "<< reset<< "to go back to Menu";
+                      cin.ignore(1000,'\n');
+                      cin.get();//Pressing any key 
+                      break;//will go to the main menu
+                  }
+                  default: {
+                      cout << red << "Invalid choice. Please select a valid option." << reset << endl;
+                      delay(2);
+                     }
+                }
+            }while(choice1 != 4);
+          }
+          else {
+              cout << red << "Account not found. Please check username and password." << reset << endl;
+              delay(2);
+          }
+        cin.ignore(1000,'\n');
+        
+    }
+    else if (initchoice == 2){
+        //Welcome message
+        cin.ignore(1000,'\n');
+        newUser();
+        
+        // ACCOUNT CREDENTIALS 
+       Account temp; // temporary account to store the new account credentials before pushing it to the vector
+        cout << blue << "-----------------------------" << reset << endl;
+        cout << "Account Username (use _ for spaces): " << yellow;
+        cin >> temp.username;
+        cout << reset << "Account Password: " << yellow;
+        if (!(cin >> temp.pin)) {
+            cout << red << "Error identifying the input. Please try again" << reset << endl;
+            this_thread::sleep_for(chrono::seconds(2));
+            cin.clear();
+            cin.ignore(1000, '\n');
+            continue;
+        }
+        cout << reset << blue << "-----------------------------" << reset << endl;
+        userAccount.push_back(temp);
+        saveToFile(userAccount);
+        loading();
+        cout << green << "\nAccount Saved" 
+                     << "\nAccount Created Successfully." 
+                     << "\nYou can now switch to "
+                     << yellow << "Login section "
+                     << reset << "to Start\n\n" << reset;
+         this_thread::sleep_for(chrono::seconds(2));
+        continue;
+    }
+    else if (initchoice == 3){
+        return 0;//exit program
+
+      }
+    }while(initchoice !=3);
+}
+// Function to display the welcome screen with ASCII art and borders
+void showColorfulWelcome() {
+    cout << blue << "*******************************************" << reset << endl;
+    cout << blue << "*                                         *" << reset << endl;
+    cout << blue << "*          " << yellow << "A N I M E   R E C O R D" << blue << "          *" << reset << endl;
+    cout << blue << "*               " << yellow << "M A N A G E R" << blue << "               *" << reset << endl;
+    cout << blue << "*                                         *" << reset << endl;
+    cout << "  " << green << "     WELCOME TO YOUR ANIME COLLECTION     " << reset << endl;
+    cout << blue << "*                                         *" << reset << endl;
+    cout << blue << "*******************************************" << reset << endl;
+}
+// Function to display the create account header
+void newUser(){
+    cout << blue << "=============================" << reset << endl;
+    cout << green << "      CREATE NEW ACCOUNT      " << reset << endl;
+    cout << blue << "=============================" << reset << endl;
+}
+
+// Function to show a loading animation
+void loading(){
+    for (int i=1; i <100;i++ ){
+        cout <<"\rLoading " << i << flush  ;
+        this_thread::sleep_for(chrono::milliseconds(30));
+    }
+}
+
+void delay(int x){
+    this_thread::sleep_for(chrono::seconds(x));
+}
+// Function to save all user accounts to file
+void saveToFile(const vector<Account> &userAccount){
+    ofstream outfile("Accounts Database.txt");
+    
+    if(!outfile){
+        cout << red <<"Error: Could not create the saved file" << reset <<endl;
+    }
+    
+    for(const auto& acc: userAccount){
+        outfile << acc.username << endl;
+        outfile << acc.pin << endl;
+
+        //storing the size of the vectors first so that we can load it properly in 'loadToFile' function
+        outfile << acc.content.anime_names.size() << endl;
+        for(size_t i = 0; i < acc.content.anime_names.size(); ++i){
+            outfile << acc.content.anime_names[i] << endl;
+            outfile << acc.content.anime_eps[i] << endl;
+        }
+        outfile << acc.content.manga_names.size() << endl;
+        for(size_t i = 0; i < acc.content.manga_names.size(); ++i){
+            outfile << acc.content.manga_names[i] << endl;
+            outfile << acc.content.manga_chpts[i] << endl;
+        }
+    }
+    outfile.close();
+}
+// Function to load user accounts from file
+void loadToFile(vector<Account>&userAccount){
+    ifstream infile("Accounts Database.txt");
+    
+    if(!infile) return;  // If file doesn't exist, return (no accounts to load)
+    
+    Account temp;  // Temporary account to read data into
+    
+    // Read accounts until end of file
+    while(infile >> temp.username >> temp.pin){  // Read username and pin
+        cout << "Loading account: " << temp.username << endl;  // Debug output
+        size_t anime_count;
+        infile >> anime_count;  // Read number of anime entries
+
+        if(anime_count > 10000) 
+        { cout << "Invalid anime count: " << anime_count << endl; break; }  // Safety check
+
+        temp.content.anime_names.resize(anime_count);  // Resize vectors to fit
+        temp.content.anime_eps.resize(anime_count);
+        
+        // Read each anime name and episodes
+        for(size_t i = 0; i < anime_count; ++i){
+            infile >> temp.content.anime_names[i] >> temp.content.anime_eps[i];
+        }
+        size_t manga_count;
+        infile >> manga_count;  // Read number of manga entries
+        if(manga_count > 10000) { cout << "Invalid manga count: " << manga_count << endl; break; }  // Safety check
+        temp.content.manga_names.resize(manga_count);
+        temp.content.manga_chpts.resize(manga_count);
+        
+        // Read each manga name and chapters
+        for(size_t i = 0; i < manga_count; ++i){
+            infile >> temp.content.manga_names[i] >> temp.content.manga_chpts[i];
+        }
+        userAccount.push_back(temp);  // Add loaded account to the vector
+    }
+}
