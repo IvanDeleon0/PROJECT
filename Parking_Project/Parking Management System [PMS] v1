@@ -2,9 +2,18 @@
 #include <vector> // Storage
 #include <thread>   // Cout Line Control
 #include <chrono> // Delay
+#include <ctime>
 #include <string> 
 using namespace std;
 
+  const  string yellow = "\033[33m";// yellow
+  const  string blue = "\033[34m"; // for the borders
+  const  string green = "\033[32m"; // green for success messages
+  const string reset = "\033[0m"; // back to white colored texts
+  const string red = "\033[1;31m"; // for error messages
+
+
+//layout stored in vector
 struct Vehicle {
     string timeIn;
     string timeOut;
@@ -15,31 +24,64 @@ struct Vehicle {
     bool isParked = false;
 };
 
+
+string generateTicket(vector <Vehicle> &records);
+void parkvehicle(vector<Vehicle>&records);
+void generatingLoad();
+void delay();
+
 int main(){
-    vector<Vehicle> cars; // the <Vehicle> introduce the struct Vehicle as the source or layout of the vector content
+    vector<Vehicle> records; // the <Vehicle> introduce the struct Vehicle as the source or layout of the vector content
     // Entrance Interface
     int choice = 0;
     do{
-        cout << "...."<<endl;
-        cout << "Enter 5 to Exit: ";
-        cin >> choice;
         
-        /* Main Interface Choices
-        1. Park vehicle
-        2. Exit vehicle
-        3. View Parked Cars
-        4. Search Car
-        5. Exit
+        
+        
+        // Main Interface Choices
+        
+        cout << "\n\n\n\n\n";
+        cout << "\t    Vehicle Type     Per Hour rate    "<<endl;
+        cout << "\t   [Cars | SUV ]           50         " <<endl;
+        cout << "\t      [ Van ]              55         " <<endl;
+        cout << "\t   [ Motorcycle ]          30         " <<endl;
+        cout << "\t      [ Bus ]              80         " <<endl;
+        
+        cout << green<<  "\nGrace period: First 30 min is free."<<reset <<endl;
+        
+        cout <<string(40, '=') << endl;
+        
+        cout << "\t 1. Park vehicle\n";
+        cout << "\t 2. Exit vehicle\n";
+        cout << "\t 3. View Parked Cars\n";
+        cout << "\t 4. Search Car\n";
+        cout << "\t 5. Exit\n";
+        cout << "\tOption: ";
+        cin >> choice;
+        cin.ignore(1000, '\n');
         
         switch(choice){
             case 1: {
-                parkvehicle(); // function
-            }
+                parkvehicle(records); 
+            }break;
+            case 2: {
+                cout<< red << "Feature Unavailable";
+                delay();
+                //exitVehicle();
+            } break;
+            case 3: {
+                cout<< red<< "Feature Unavailable";
+                delay();
+            }break;
+            case 4: {
+                cout<< red << "Feature Unavailable";
+                delay();
+            }break;
+            default:{
+                cout<< "Only Choose from [1-5]...";
+                delay();
+            }break;
         }
-        
-        
-        */
-       
         
     }while(choice != 5);
     
@@ -49,29 +91,63 @@ int main(){
     return 0;
 }
 
-/*
-void parkvehicle(vector<Vehicle)&cars{
+
+void parkvehicle(vector<Vehicle>&records){
     Vehicle v;
     cout << string (30, '=') << endl;
     
-    v.ticketNum = generateTicket();
-    cout << "Parking Ticket Code: "<< v.ticketNum;
+    v.ticketNum = generateTicket(records);
+    generatingLoad();
+    cout <<endl << string(30, '=') << endl;
+    cout << "\n\tParking Ticket Code: "<< yellow << v.ticketNum << reset << endl;;
     
     cout <<string(30, '=') << endl;
     cout << "Vehicle Type [Cars | SUV | Van | Motorcycle | Bus ]"<<endl;
-    cout << "Type : ";
+    
+    cout << "Type : " << yellow;
     cin  >> v.vehicleType;
     
-    v.timeIn = getCurrentTime ; //Current timeIn
-    v.timeOut = "";
-    v.fee = 0;
+    //input validation
+   /* if(cin.fail()){
+        cout << 
+    }*/
+    
+    cout << reset << "Plate Number: " << yellow;
+    cin >> v.plateNum;
+    
+    auto now = chrono::system_clock::now();
+    time_t now_c = chrono::system_clock::to_time_t(now);
+    v.timeIn = ctime(&now_c); // This converts time to a readable string
+    
+    v.timeOut = ""; // make it blank
+    v.fee = 0; // zero since its just the entrance, fee will be calculated on exit
     v.isParked = true;
     
-    
-    
+    records.push_back(v); // save
+    cout << string(40,'=');
+    cout << reset<< "\n\n\n\n\nREMEMBER YOUR CODE TO CLAIM BACK YOUR VEHICLE\n";
+    cout << "Parking Ticket Code: "<< v.ticketNum << endl;
+    cout << string(40,'=');
+    cout <<"\nPress ENTER to return to the menu";
+    cin.ignore(1000,'\n');
 }
-void generateTicket(vector <Vehicle> &cars){
+
+string generateTicket(vector <Vehicle> &records){
     auto now = chrono::system_clock::now();
+    auto time_point = chrono::system_clock::to_time_t(now);
+    // Format: TKT - seconds - sequence number
+    return "TKT-" + to_string(time_point) + "-" + to_string(records.size() + 1);
     
+};
+
+void generatingLoad(){
+    for (int i=1;i < 101; i++){
+    cout << "\rGenerating "<< i << " % "<<flush;
+    this_thread::sleep_for(chrono::milliseconds(50));
+    }
 }
-*/
+
+void delay(){
+    cout << " ";
+    this_thread::sleep_for(chrono::milliseconds(1500));
+}
