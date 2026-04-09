@@ -1,0 +1,77 @@
+#include <iostream>
+#include <vector> // Storage
+#include <thread>   // Cout Line Control
+#include <chrono> // Delay
+#include <string> 
+using namespace std;
+
+struct Vehicle {
+    string timeIn;
+    string timeOut;
+    string plateNum;
+    string ticketNum;
+    string vehicleType;
+    double fee;
+    bool isParked = false;
+};
+
+int main(){
+    vector<Vehicle> cars; // the <Vehicle> introduce the struct Vehicle as the source or layout of the vector content
+    // Entrance Interface
+    int choice = 0;
+    do{
+        cout << "...."<<endl;
+        cout << "Enter 5 to Exit: ";
+        cin >> choice;
+        
+        /* Main Interface Choices
+        1. Park vehicle
+        2. Exit vehicle
+        3. View Parked Cars
+        4. Search Car
+        5. Exit
+        
+        switch(choice){
+            case 1: {
+                parkvehicle(); // function
+            }
+        }
+        
+        
+        */
+       
+        
+    }while(choice != 5);
+    
+    cout << "Thank you for using our Service.."; // Exit Message
+    cout << endl;
+    this_thread::sleep_for(chrono::milliseconds(1500));
+    return 0;
+}
+
+/*
+void parkvehicle(vector<Vehicle)&cars{
+    Vehicle v;
+    cout << string (30, '=') << endl;
+    
+    v.ticketNum = generateTicket();
+    cout << "Parking Ticket Code: "<< v.ticketNum;
+    
+    cout <<string(30, '=') << endl;
+    cout << "Vehicle Type [Cars | SUV | Van | Motorcycle | Bus ]"<<endl;
+    cout << "Type : ";
+    cin  >> v.vehicleType;
+    
+    v.timeIn = getCurrentTime ; //Current timeIn
+    v.timeOut = "";
+    v.fee = 0;
+    v.isParked = true;
+    
+    
+    
+}
+void generateTicket(vector <Vehicle> &cars){
+    auto now = chrono::system_clock::now();
+    
+}
+*/
