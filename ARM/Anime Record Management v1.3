@@ -281,8 +281,9 @@ void loading(){
 void delay(int x){
     this_thread::sleep_for(chrono::seconds(x));
 }
+
 void saveToFile(const vector<Account> &userAccount){
-    ofstream outfile("Accounts Database.txt");
+    ofstream outfile("Accounts Database.txt", ios::app);
     
     if(!outfile){
         cout << red <<"Error: Could not create the saved file" << reset <<endl;
