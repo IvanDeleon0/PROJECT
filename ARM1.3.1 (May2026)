@@ -56,14 +56,25 @@ using namespace std;
   const  string reset = "\033[0m"; // back to white colored texts
   const  string red = "\033[1;31m"; // for error messages
 
+
+
 //dashboard contents
+struct Manga{
+    string manga_name;
+    double manga_chpt = 0.0;
+};
+
+struct Anime{
+    string anime_name;
+    int anime_ep = 0;
+};
+
 struct accContents{
    // Total Manga and Anime
-  string anime_name = "NONE";//  anime name is for the dashboard, so that we can display the anime name and episodes watched
-  int anime_ep = 0; // default value of 0 for the episodes and chapters, so that when we add it will be added to 0
+  vector<Manga> MangaList;
+  vector<Anime> AnimeList;
+
   int totalSeeAnime = 0; // totalSeeAnime is for the dashboard, so that we can calculate the average of anime watched
-  string manga_name = "NONE"; // manga name is for the dashboard, so that we can display the manga name and chapters read
-  double manga_chpt = 0.0; // double because theres chapter with '10.5'
   int totalReadManga = 0; // totalReadManga is for the dashboard, so that we can calculate the average of manga read
 
   
@@ -200,11 +211,11 @@ int main()
                                 cin.ignore(1000,'\n');
 
                                 cout << string (30,' ') << "Anime name: ";
-                                getline(cin , temp.content.anime_name); 
+                                getline(cin , temp.content.AnimeList.anime_name); 
                                 cout << string (30,' ') << "Episodes Watched: ";
                                 cin >> new_ep;
                                 
-                                temp.content.anime_ep += new_ep;
+                                temp.content.Anime.list.anime_ep += new_ep;
                                 saveToFile(userAccount); 
                                 cin.get();
                                 
@@ -214,26 +225,70 @@ int main()
                             cin.ignore(1000,'\n');   
                                 
                                 cout << string (30,' ') <<"Manga name: ";
-                                getline(cin,temp.content.manga_name); 
+                                getline(cin,temp.content.MangaList.manga_name); 
                                 cout << string (30,' ') << "Chapters read: ";
                                 cin >> new_chpt;
                                 
-                                temp.content.manga_chpt += new_chpt;
+                                temp.content.MangaList.manga_chpt += new_chpt;
                                 saveToFile(userAccount); 
                                 cin.get();
                                 
                         }break;
                         case 3: {
-                            
-                                cout <<yellow << "\n[ANIME]\n";
-                                cout << string (30,' ') << "Anime Name                Total Episodes Watched"<<endl;
-                                cout << string (30,' ') << left << setw(25)<<temp.content.anime_name << setw(15) << temp.content.anime_ep;
-                                cout << "\n===============================================================";
+                            cout << "\n" << string(30, ' ') << yellow << "=== " << temp.username << "'s LIVE ANIME LOG ===" << reset << "\n\n";
+
+                            if(temp.content.AnimeList.empty()){
+                                 cout << string(30, ' ') << red << "No records found! Log some shows first." << reset << "\n";
+                            }
+                            else{
+
+                                //setw 15 -index        
+                                //     30 - Anime tag / Manga tag
+                                //     45 -ep watched / Chapter Read
+
+                                //Anime Dashboard
+                                cout <<yellow <<setw(30)<< "[ANIME]\n";
                                 
+                                //Tags
+
+                                cout << string(25, ' ') << blue 
+                                    << left << setw(8)  << "INDEX" 
+                                    << left << setw(30) << "ANIME NAME" 
+                                    << left << setw(45) << "EPISODES" << reset << "\n";
+
+                                //Loop through the nested vector [Anime LIST]
+                                for(int i =0; i < temp.content.AnimeList.size();i++){
+                                    cout << string (25, ' ') 
+                                         << left <<setw(8) << "[ " << i + 1 << "]" 
+                                         << left << setw(30) << temp.content.AnimeList[i].anime_name
+                                         << left <<setw(45) <<temp.content.AnimeList[i].anime_ep
+                                         << "\n";
+                                }
+                                cout << "\n===============================================================\n\n";
+                                
+                                //MANGA DASHBOARD
+                                cout <<yellow <<setw(30)<< "[MANGA]\n";
+
+
+                                cout << string(25, ' ') << blue 
+                                    << left << setw(8)  << "INDEX" 
+                                    << left << setw(30) << "MANGA NAME" 
+                                    << left << setw(45) << "CHAPTER/S" << reset << "\n";
+
+                                //Loop through the nested vector [Manga LIST]
+                                for(int i =0; i < temp.content.MangaList.size();i++){
+                                    cout << string (25, ' ') 
+                                         << left <<setw(8) << "[ + stoi(i + 1) + ]" 
+                                         << left << setw(30) << temp.content.MangaList[i].manga_name
+                                         << left <<setw(45) <<temp.content.MangaList[i].manga_chpt
+                                         << "\n";
+                                }
+                                cout << "\n===============================================================";
+
                                 cout << string (30,' ') <<"Press "<< yellow<<"Enter "<< reset<< "to go back to Menu";
                                 cin.ignore(1000,'\n');
                                 cin.get();//Pressing any key 
-                                
+                            }    
                                 
                         }break;
                         case 4:{

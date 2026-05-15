@@ -223,4 +223,5 @@ void loadFromFile(vector<Vehicle> &records){
         }
         file.close();
     }
+    
 }

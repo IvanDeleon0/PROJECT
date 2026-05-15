@@ -1,4 +1,4 @@
-\
+
 /* Notes
 Features ng [ARM] Anime Record Management
 
@@ -127,12 +127,11 @@ int main()
         if (!(getline(cin, username))) {
             cout << red << "Error identifying the input. Please try again" << reset << endl;
             continue;
-            
         }
 
         cout << "Password: ";
         if (!(cin >> pin)) {
-            cout << red << "Error identifying the input. Please try again\n\n\n\n\n\n\n\n\n\"" << reset << endl;
+            cout << red << "Error identifying the input. Please try again" << reset << endl;
             cin.clear();
             cin.ignore(1000, '\n');
             continue;
@@ -174,13 +173,8 @@ int main()
               int choice1 =0;
               int new_ep = 0;
               double new_chpt= 0.0;
-              cout << "What do you have in mind today? ";
-              cout << "Anime \t[1] \n"
-                    << "Manga\t[2] \n" 
-                    << "Dashboard\t[3] \n";
-              cout << string(10,'=');
-              cout << "Choice: ";
-              cin >> choice1; 
+              cout << "Anime [1] \n"<< "Manga[2] \nDashboard[3] \n";
+              cin >> choice1;
               switch(choice1){
                   case 1: {
                         cout << "Anime name: ";
