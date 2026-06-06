@@ -3,6 +3,13 @@
 A C++ console-based Anime & Manga tracking system that allows users to manage their viewing and reading progress through a secure account system with persistent file storage.
 
 ---
+# Version Control Naming Format
+[NAME] v[Month]-[Version Date]-[Time]
+
+- NAME  [File Name]
+- Month [Numerical (06) --> June ]
+- Version Date [Alphabetical Hierarchy]
+- Time [PM / AM] 
 
 ## ✨ Features
 
