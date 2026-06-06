@@ -1,57 +1,94 @@
-# PROJECT
+# 🎌 ARM - Anime Record Management
 
-## ARM v1.3 Curent Features
+A C++ console-based Anime & Manga tracking system that allows users to manage their viewing and reading progress through a secure account system with persistent file storage.
 
-## 📋 Core Features##
+---
 
-## 🔐 1. Account Management
-- Create a new account (username + PIN)
-- Login with existing credentials
-- Basic account validation (checks username & PIN match)
-  
-## 📂 2. File Persistence (Database System)
-- Saves account data to "Accounts Database.txt"
-- Loads existing accounts when program starts
-- Automatically updates file after changes
+## ✨ Features
 
+### 👤 Account Management
+- Create new user accounts
+- Login authentication using username and PIN
+- Multi-user support with separate records per account
+- Account validation before dashboard access
 
-## 🎌 3. Anime Tracking
-- Input anime name
-- Input number of episodes watched
-- Accumulates total episodes watched per account
-## 📖 4. Manga Tracking
-- Input manga name
-- Input number of chapters read
-- Supports decimal values (e.g., 10.5 chapters)
-- Accumulates total chapters read
-## 📊 5. Dashboard Display
- Displays:
-- Anime name
-- Total episodes watched
-- Simple formatted output using iomanip
-## 🖥️ 6. Menu Navigation System
-Main Menu:
-- Login
-- Create Account
-- Exit
-User Menu:
-- Anime
-- Manga
-- Dashboard
-## 🎨 7. Console UI Enhancements
-- Colored text output (ANSI escape codes)
-- Basic formatted layout (borders, spacing)
-- Loading animation using thread + chrono
-## ⚙️ 8. Input Handling
-- Basic validation for numeric input (cin.fail)
-- Prevents program crash on invalid input
-# ⚠️ 🚧 Current Limitations (Important)
-## Only 1 anime and 1 manga per account (no list yet)
-No:
-- Search feature
-- Multiple entries
-- Advanced dashboard (averages, totals)
-- Strong input validation (still accepts blank names)
+### 💾 Data Persistence
+- Automatic save and load functionality
+- File-based database storage
+- Data reconstruction on program startup
+- Persistent user records between sessions
+
+### 🎥 Anime Tracking
+- Add anime titles and watched episodes
+- Update existing anime progress automatically
+- Prevent duplicate anime entries
+- Store multiple anime records per account
+
+### 📖 Manga Tracking
+- Add manga titles and chapters read
+- Update existing manga progress automatically
+- Prevent duplicate manga entries
+- Support decimal chapter values
+
+### 📊 Dashboard & Analytics
+- Display all anime records
+- Display all manga records
+- Calculate total episodes watched
+- Calculate total chapters read
+- Show average viewing and reading statistics
+
+### 🗑️ Record Management
+- Delete anime records
+- Delete manga records
+- Confirmation prompts before deletion
+
+### 🛡️ Input Validation
+- Handles invalid numeric inputs
+- Prevents common user input errors
+- Error messaging and recovery mechanisms
+
+### 🎨 User Experience
+- Color-coded terminal interface
+- Loading animations
+- Welcome screen
+- Exit animation
+- Organized menu navigation
+
+---
+
+## 🛠️ Technologies Used
+
+- C++
+- STL Vectors
+- File Handling (`ifstream`, `ofstream`)
+- Structures (`struct`)
+- Threading (`<thread>`)
+- Console UI Design
+
+---
+
+## 📂 Core Concepts Demonstrated
+
+- Authentication System
+- File Management
+- Data Serialization
+- Dynamic Data Structures
+- CRUD Operations
+- Modular Programming
+- Persistent Storage
+- Console Application Development
+
+---
+
+## 🚀 Future Improvements
+
+- Password encryption
+- Search functionality
+- Episode/chapter editing
+- User profile customization
+- Watch time analytics
+- Export records to CSV/Excel
+- GUI version
 
 ## Target ARM Final
 # Account Management FlowChart
@@ -62,8 +99,6 @@ No:
 
 # Deletion Flow
 ![Flowchart](Deletion-flowchart.png)
-
-SUBJECTED TO CHANGE, NOT FINAL
 
 ##
 
