@@ -54,7 +54,14 @@ No:
 - Strong input validation (still accepts blank names)
 
 ## Target ARM Final
-![Flowchart](record-flowchart.png)
+# Account Management FlowChart
+![Flowchart](account-flowchart.png)
+
+# [Main] Anime Manga Record Management
+![Flowchart](ARM-flowchart.png)
+
+# Deletion Flow
+![Flowchart](Deletion-flowchart.png)
 
 SUBJECTED TO CHANGE, NOT FINAL
 
