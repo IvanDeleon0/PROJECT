@@ -109,4 +109,38 @@ A C++ console-based Anime & Manga tracking system that allows users to manage th
 
 ##
 
+## Function Communication Flow
 
+```text
+Start Program
+      │
+      ▼
+Load Database
+      │
+      ▼
+Main Menu
+ ├── Login
+ ├── Create Account
+ └── Exit
+      │
+      ▼
+User Dashboard
+ ├── Add Anime
+ ├── Add Manga
+ ├── Search Records
+ ├── View Dashboard
+ ├── Delete Anime
+ ├── Delete Manga
+ ├── Help
+ └── Logout
+      │
+      ▼
+Save Data
+      │
+      ▼
+End Program
+```
+
+### Description
+
+This diagram presents the overall flow of the Anime Record Manager (ARM) system. The program begins by loading previously saved account and record data from the database file before displaying the main menu. Users may create a new account, log in to an existing account, or exit the application. After successful authentication, the user gains access to the dashboard where core features such as adding anime or manga records, searching records, viewing statistics, deleting entries, and accessing help are available. Any modifications made during a session are saved to the database to ensure data persistence before the user logs out or exits the program. This flow illustrates the major stages of system execution and the navigation path available to users.
