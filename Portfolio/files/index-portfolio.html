@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Name — Full-Stack Developer</title>
+<meta name="description" content="Personal portfolio — dark blue tech theme with a live network-signal hero, projects, skills, and experience timeline.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles-portfolio.css">
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a href="#top" class="brand">
+      <span class="brand__mark brand__mark--avatar mono" aria-hidden="true">YN</span>
+      <span class="brand__text">Your Name</span>
+    </a>
+
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="nav__actions">
+      <a href="#" class="btn btn--ghost btn--sm">Résumé ↓</a>
+      <a href="#contact" class="btn btn--primary btn--sm">Let's talk</a>
+    </div>
+
+    <button class="nav__burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav__mobile" id="navMobile">
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
+    <a href="#contact" class="btn btn--primary btn--sm">Let's talk</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <canvas id="signalCanvas" class="hero__canvas" aria-hidden="true"></canvas>
+  <div class="hero__vignette" aria-hidden="true"></div>
+
+  <div class="hero__inner">
+    <div class="tag">
+      <span class="tag__dot"></span>
+      <span class="mono">AVAILABLE FOR NEW PROJECTS</span>
+    </div>
+
+    <h1 class="hero__title">
+      Hi, I'm Your Name.<br>
+      I build things at the edge of <span class="grad-text">design & code.</span>
+    </h1>
+
+    <p class="hero__sub">
+      Placeholder tagline — swap this for a one-line summary of what you do and who you do it for.
+      Full-stack developer focused on fast, reliable products across web, mobile and backend.
+    </p>
+
+    <div class="hero__actions">
+      <a href="#projects" class="btn btn--primary">View my work</a>
+      <a href="#" class="btn btn--ghost">
+        <span class="play" aria-hidden="true">↓</span> Download résumé
+      </a>
+    </div>
+
+    <div class="hero__readout mono" id="readout">
+      <div class="readout__item">
+        <span class="readout__label">years experience</span>
+        <span class="readout__value" id="rLatency">—</span>
+      </div>
+      <div class="readout__sep" aria-hidden="true">/</div>
+      <div class="readout__item">
+        <span class="readout__label">projects shipped</span>
+        <span class="readout__value" id="rNodes">—</span>
+      </div>
+      <div class="readout__sep" aria-hidden="true">/</div>
+      <div class="readout__item">
+        <span class="readout__label">status</span>
+        <span class="readout__value" id="rUptime">—</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STRIP -->
+<section class="logos" aria-label="Technologies">
+  <p class="logos__label mono">TOOLS I WORK WITH</p>
+  <div class="logos__row">
+    <span>TYPESCRIPT</span>
+    <span>REACT</span>
+    <span>NODE.JS</span>
+    <span>PYTHON</span>
+    <span>POSTGRES</span>
+    <span>DOCKER</span>
+    <span>AWS</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about__inner">
+    <div class="about__avatar-wrap">
+      <div class="about__avatar mono">YN</div>
+      <div class="about__avatar-ring" aria-hidden="true"></div>
+    </div>
+    <div class="about__content">
+      <p class="eyebrow mono">// ABOUT</p>
+      <h2>A little about me.</h2>
+      <p class="about__text">
+        Placeholder bio — replace with a few sentences about your background: what you build, the kinds
+        of problems you like solving, and how you got into tech. Keep it in your own voice; two or three
+        short paragraphs is usually enough.
+      </p>
+      <p class="about__text">
+        Second paragraph placeholder — mention what you're focused on right now, or the kind of role or
+        collaboration you're looking for next.
+      </p>
+      <div class="about__facts mono">
+        <div><span>Location</span>Your City, Country</div>
+        <div><span>Focus</span>Web · Backend · Cloud</div>
+        <div><span>Open to</span>Full-time · Contract</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="features" id="projects">
+  <div class="section-head">
+    <p class="eyebrow mono">// PROJECTS</p>
+    <h2>Selected work.</h2>
+    <p class="section-sub">A handful of things I've built recently. Replace these with your own projects, screenshots and links.</p>
+  </div>
+
+  <div class="feature-grid">
+    <article class="feature-card feature-card--lg project-card">
+      <div class="feature-card__icon">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 2L4 7v12l9 5 9-5V7l-9-5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M13 2v11m0 0L4 7m9 6l9-6m-9 6v11" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      </div>
+      <h3>Project One — Web Platform</h3>
+      <p>Placeholder description. What the project does, the problem it solves, and your role in building it.</p>
+      <div class="project-card__tags mono">
+        <span>REACT</span><span>NODE.JS</span><span>POSTGRES</span>
+      </div>
+      <div class="project-card__links">
+        <a href="#" class="link-ghost">Live demo →</a>
+        <a href="#" class="link-ghost">Source code →</a>
+      </div>
+    </article>
+
+    <article class="feature-card project-card">
+      <div class="feature-card__icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.4"/><rect x="13" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.4" opacity="0.5"/><rect x="3" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.4" opacity="0.5"/><rect x="13" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.4"/></svg>
+      </div>
+      <h3>Project Two — Mobile App</h3>
+      <p>Placeholder description of a second project, its stack, and the outcome or metric you're proud of.</p>
+      <div class="project-card__tags mono">
+        <span>REACT&nbsp;NATIVE</span><span>FIREBASE</span>
+      </div>
+      <div class="project-card__links">
+        <a href="#" class="link-ghost">Case study →</a>
+      </div>
+    </article>
+
+    <article class="feature-card project-card">
+      <div class="feature-card__icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3.5v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9v-5L12 3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h3>Project Three — API / Tooling</h3>
+      <p>Placeholder description for a backend, CLI, or internal tool project. Mention scale or usage if relevant.</p>
+      <div class="project-card__tags mono">
+        <span>PYTHON</span><span>DOCKER</span>
+      </div>
+      <div class="project-card__links">
+        <a href="#" class="link-ghost">Documentation →</a>
+      </div>
+    </article>
+
+    <article class="feature-card project-card">
+      <div class="feature-card__icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 17l5-5 4 4 8-9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 6h5v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h3>Project Four — Data / ML</h3>
+      <p>Placeholder description for a data pipeline, dashboard, or ML experiment worth showing off.</p>
+      <div class="project-card__tags mono">
+        <span>PYTHON</span><span>PANDAS</span>
+      </div>
+      <div class="project-card__links">
+        <a href="#" class="link-ghost">Write-up →</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills" id="skills">
+  <div class="section-head">
+    <p class="eyebrow mono">// SKILLS</p>
+    <h2>What I bring to a team.</h2>
+  </div>
+  <div class="skills__grid">
+    <div class="skills__group">
+      <h4 class="mono">LANGUAGES</h4>
+      <div class="skills__tags">
+        <span>JavaScript / TypeScript</span><span>Python</span><span>SQL</span><span>Go</span>
+      </div>
+    </div>
+    <div class="skills__group">
+      <h4 class="mono">FRAMEWORKS</h4>
+      <div class="skills__tags">
+        <span>React</span><span>Next.js</span><span>Node.js</span><span>Express</span>
+      </div>
+    </div>
+    <div class="skills__group">
+      <h4 class="mono">INFRASTRUCTURE</h4>
+      <div class="skills__tags">
+        <span>Docker</span><span>AWS</span><span>PostgreSQL</span><span>Redis</span>
+      </div>
+    </div>
+    <div class="skills__group">
+      <h4 class="mono">PRACTICES</h4>
+      <div class="skills__tags">
+        <span>CI/CD</span><span>Testing</span><span>Code review</span><span>Agile</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="process" id="experience">
+  <div class="section-head">
+    <p class="eyebrow mono">// EXPERIENCE</p>
+    <h2>Where I've worked.</h2>
+  </div>
+
+  <div class="process__list">
+    <div class="process__item">
+      <div class="process__num mono">2024</div>
+      <div class="process__body">
+        <h3>Job Title — Company Name</h3>
+        <p>Placeholder: what you owned in this role, one or two concrete outcomes, and the stack you used.</p>
+      </div>
+    </div>
+    <div class="process__item">
+      <div class="process__num mono">2022</div>
+      <div class="process__body">
+        <h3>Job Title — Company Name</h3>
+        <p>Placeholder: previous role, responsibilities and a highlight worth mentioning.</p>
+      </div>
+    </div>
+    <div class="process__item">
+      <div class="process__num mono">2020</div>
+      <div class="process__body">
+        <h3>Job Title — Company Name</h3>
+        <p>Placeholder: where you started, and what you learned that still shapes how you work.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="testimonial" id="testimonial">
+  <svg class="testimonial__quote" width="46" height="34" viewBox="0 0 46 34" fill="none" aria-hidden="true">
+    <path d="M0 34V20.4C0 8.5 6.8 1.4 18.4 0v6.4c-6 1.4-9 5-9 10.6h9V34H0Zm27.6 0V20.4C27.6 8.5 34.4 1.4 46 0v6.4c-6 1.4-9 5-9 10.6h9V34H27.6Z" fill="currentColor"/>
+  </svg>
+  <p class="testimonial__text">
+    Placeholder recommendation — a short quote from a manager, teammate or client about working with you.
+    Swap this for a real quote once you have one; a genuine short quote lands better than a long fabricated one.
+  </p>
+  <div class="testimonial__author">
+    <div class="testimonial__avatar mono">JD</div>
+    <div>
+      <div class="testimonial__name">Jordan Doe</div>
+      <div class="testimonial__role mono">Engineering Manager, Company</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="cta" id="contact">
+  <div class="cta__glow" aria-hidden="true"></div>
+  <p class="eyebrow mono">// GET IN TOUCH</p>
+  <h2>Let's build something.</h2>
+  <p class="cta__sub">Open to full-time roles and select contract work. Usually reply within a day or two.</p>
+  <form class="cta__form cta__form--stacked" id="ctaForm">
+    <input type="text" required placeholder="Your name" aria-label="Your name" id="ctaName">
+    <input type="email" required placeholder="you@email.com" aria-label="Your email" id="ctaEmail">
+    <textarea required placeholder="What are you working on?" aria-label="Message" id="ctaMessage" rows="4"></textarea>
+    <button type="submit" class="btn btn--primary">Send message</button>
+  </form>
+  <p class="cta__note mono" id="ctaNote">&nbsp;</p>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer__top footer__top--portfolio">
+    <div class="footer__brand">
+      <a href="#top" class="brand">
+        <span class="brand__mark brand__mark--avatar mono" aria-hidden="true">YN</span>
+        <span class="brand__text">Your Name</span>
+      </a>
+      <p>Full-stack developer building things at the edge of design and code.</p>
+    </div>
+
+    <div class="footer__col">
+      <h4 class="mono">ELSEWHERE</h4>
+      <a href="#">GitHub</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">X / Twitter</a>
+      <a href="#">Email</a>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <p>© 2026 Your Name. Built with the NODE template.</p>
+    <div class="footer__legal">
+      <a href="#top">Back to top ↑</a>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="Back to top">↑</button>
+
+<script src="script-portfolio.js"></script>
+</body>
+</html>
